@@ -1,0 +1,293 @@
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f5f8fa url("/assets/images/bg-pattern.jpg") repeat;
+  background-size: cover;
+}
+.navbar {
+  background: linear-gradient(90deg, #004aad, #0074d9);
+}
+footer {
+  background: linear-gradient(90deg, #004aad, #0074d9);
+}
+.place-card img,
+.gallery img {
+  height: 220px;
+  object-fit: cover;
+  width: 100%;
+}
+.carousel-item img {
+  height: 450px;
+  object-fit: cover;
+}
+h2 {
+  color: #004aad;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.navbar .nav-link.custom-nav {
+  color: #fff !important; /* Always white */
+  padding: 6px 14px;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+}
+
+/* Background on hover */
+.navbar .nav-link.custom-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff !important;
+}
+
+/* Active link style */
+.navbar .nav-link.custom-nav.active {
+  background: rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+}
+/* Custom Styles */
+.carousel-item img {
+  height: 100vh; /* full-screen height */
+  object-fit: cover;
+}
+.carousel-caption {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  padding: 15px;
+}
+.place-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.place-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+footer {
+  background: #0d6efd;
+}
+footer a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+.place-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.place-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Image wrapper with hover zoom */
+.card-img-wrapper {
+  overflow: hidden;
+}
+.card-img-wrapper img {
+  transition: transform 0.5s ease;
+}
+.place-card:hover .card-img-wrapper img {
+  transform: scale(1.1);
+}
+
+/* Creative Button */
+.custom-btn {
+  display: inline-block;
+  padding: 8px 18px;
+  font-weight: 500;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.custom-btn:hover {
+  background: linear-gradient(45deg, #6610f2, #0d6efd);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+.about-btn {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.about-btn:hover {
+  background: linear-gradient(45deg, #6610f2, #0d6efd);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.custom-btn {
+  display: inline-block;
+  padding: 10px 20px; /* spacing */
+  background-color: #0d6efd; /* blue background */
+  color: #fff; /* white text */
+  font-weight: bold; /* bold text */
+  border-radius: 25px; /* rounded edges */
+  text-decoration: none; /* remove underline */
+  transition: all 0.3s ease; /* smooth hover */
+}
+
+.custom-btn:hover {
+  background-color: #0056b3; /* darker blue on hover */
+  transform: translateY(-2px); /* slight lift */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* subtle shadow */
+}
+
+.about-banner {
+  position: relative;
+  overflow: hidden;
+}
+.banner-overlay {
+  background: rgba(0, 0, 0, 0.4); /* dark overlay for readability */
+  padding: 0 15px;
+}
+@media (max-width: 768px) {
+  .banner-overlay h1 {
+    font-size: 2rem;
+  }
+  .banner-overlay p {
+    font-size: 1rem;
+  }
+}
+
+.featured-card {
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.img-wrapper {
+  overflow: hidden;
+  border-radius: 12px 12px 0 0; /* rounded top edges */
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 250px; /* uniform height */
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.featured-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25);
+}
+
+.featured-card:hover .img-wrapper img {
+  transform: scale(1.1); /* zoom only the image */
+}
+
+@media (max-width: 768px) {
+  .img-wrapper img {
+    height: 200px;
+  }
+}
+
+/* Navbar customization */
+.navbar .nav-link {
+  color: #fff !important;
+  margin-left: 10px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+.navbar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Banner */
+.page-banner {
+  position: relative;
+  height: 300px;
+  background: url("/assets/images/temple.jpg") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+.page-banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+}
+.page-banner h1 {
+  position: relative;
+  z-index: 1;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+/* Main content */
+.content-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Sidebar */
+.sidebar-card {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+.sidebar-card ul {
+  list-style: none;
+  padding-left: 0;
+}
+.sidebar-card li {
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 15px;
+}
+.sidebar-card li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #0d6efd;
+  font-weight: bold;
+}
+
+/* Footer */
+footer {
+  background: #0d6efd;
+  color: #fff;
+  padding: 25px 0;
+}
+footer a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 5px;
+  transition: 0.3s;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .page-banner h1 {
+    font-size: 2rem;
+  }
+}

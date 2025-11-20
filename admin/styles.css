@@ -1,0 +1,3 @@
+/* admin/styles.css - small visual polish for admin toolbar (kept minimal) */
+#eg-modal { z-index: 2050; }
+.eg-edit-btn { margin-left:6px; }
