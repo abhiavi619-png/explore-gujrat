@@ -1,0 +1,1295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard — Login First</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    /* LOGIN SCREEN */
+    #loginScreen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .login-container {
+      width: 380px;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      background: white;
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .login-container h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #1a202c;
+    }
+
+    .login-container p {
+      color: #718096;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .form-group input {
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: #f7fafc;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .login-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .login-footer label {
+      font-size: 13px;
+      color: #718096;
+      cursor: pointer;
+    }
+
+    .login-footer label input {
+      margin-right: 6px;
+      cursor: pointer;
+    }
+
+    #loginBtn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    #loginBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    #loginError {
+      color: #e53e3e;
+      font-size: 13px;
+      margin-top: 12px;
+      padding: 12px;
+      background: #fff5f5;
+      border-radius: 8px;
+      border-left: 4px solid #e53e3e;
+    }
+
+    /* DASHBOARD */
+    #app {
+      display: none;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      color: white;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    header h1 {
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+    }
+
+    /* SIDEBAR */
+    aside {
+      height: fit-content;
+    }
+
+    .user-card {
+      padding: 24px;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+    }
+
+    .user-profile {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .user-info h3 {
+      font-size: 16px;
+      color: #1a202c;
+      margin-bottom: 4px;
+    }
+
+    .user-info p {
+      font-size: 13px;
+      color: #718096;
+    }
+
+    .user-card nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 16px;
+    }
+
+    .user-card nav a {
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .user-card nav a:hover {
+      background: #edf2f7;
+      color: #667eea;
+    }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      padding: 24px;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-top: 4px solid;
+    }
+
+    .stat-card:nth-child(1) {
+      border-top-color: #667eea;
+    }
+
+    .stat-card:nth-child(2) {
+      border-top-color: #48bb78;
+    }
+
+    .stat-card:nth-child(3) {
+      border-top-color: #ed8936;
+    }
+
+    .stat-card:nth-child(4) {
+      border-top-color: #f56565;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: #718096;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a202c;
+    }
+
+    /* CONTROLS */
+    .controls {
+      padding: 20px;
+      border-radius: 16px;
+      background: white;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      gap: 16px;
+    }
+
+    .search-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex: 1;
+    }
+
+    #searchInput {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    #searchBtn, #createBtn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    #searchBtn {
+      background: #edf2f7;
+      color: #4a5568;
+    }
+
+    #searchBtn:hover {
+      background: #e2e8f0;
+    }
+
+    #createBtn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    #createBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    /* TABLE */
+    .table-container {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    #usersTable {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #usersTable thead {
+      background: #f7fafc;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    #usersTable th {
+      text-align: left;
+      padding: 16px;
+      font-weight: 600;
+      color: #4a5568;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #usersTable td {
+      padding: 16px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #2d3748;
+    }
+
+    #usersTable tr:hover {
+      background: #f7fafc;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-active {
+      background: #c6f6d5;
+      color: #22543d;
+    }
+
+    .status-suspended {
+      background: #fed7d7;
+      color: #742a2a;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-buttons button {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 0;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .action-buttons button:first-child {
+      background: #bee3f8;
+      color: #2c5282;
+    }
+
+    .action-buttons button:first-child:hover {
+      background: #90cdf4;
+    }
+
+    .action-buttons button:last-child {
+      background: #fed7d7;
+      color: #742a2a;
+    }
+
+    .action-buttons button:last-child:hover {
+      background: #fc8181;
+    }
+
+    /* MODAL STYLES */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.3s ease;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 15px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: #1a202c;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: #718096;
+      transition: all 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: #e53e3e;
+      transform: scale(1.2);
+    }
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-input {
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-select {
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 2px solid #e2e8f0;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-save {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-cancel {
+      background: #edf2f7;
+      color: #4a5568;
+    }
+
+    .btn-cancel:hover {
+      background: #e2e8f0;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 2000;
+      animation: slideIn 0.3s ease;
+      max-width: 300px;
+    }
+
+    .notification.success {
+      background: #c6f6d5;
+      color: #22543d;
+      border-left: 4px solid #48bb78;
+    }
+
+    .notification.error {
+      background: #fed7d7;
+      color: #742a2a;
+      border-left: 4px solid #f56565;
+    }
+
+    .notification.info {
+      background: #bee3f8;
+      color: #2c5282;
+      border-left: 4px solid #4299e1;
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      background: #fed7d7;
+      color: #742a2a;
+      border: 0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    .logout-btn:hover {
+      background: #fc8181;
+      transform: translateY(-2px);
+    }
+
+    /* ENHANCED BUTTON STYLES */
+    .btn-primary {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    .btn-primary:active {
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 2px solid #667eea;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: white;
+      color: #667eea;
+    }
+
+    .btn-secondary:hover {
+      background: #f7fafc;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(72, 187, 120, 0.5);
+    }
+
+    .btn-danger {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(245, 101, 101, 0.5);
+    }
+
+    .btn-warning {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(237, 137, 54, 0.3);
+    }
+
+    .btn-warning:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(237, 137, 54, 0.5);
+    }
+
+    .btn-info {
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+    }
+
+    .btn-info:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(66, 153, 225, 0.5);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .quick-actions {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .quick-actions h3 {
+      margin: 0 0 16px;
+      color: #1a202c;
+      font-size: 16px;
+    }
+
+    footer {
+      padding: 32px 16px;
+      text-align: center;
+      color: #a0aec0;
+      font-size: 13px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .controls {
+        flex-direction: column;
+      }
+
+      .search-group {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loginScreen" style="display:flex;align-items:center;justify-content:center;height:100vh;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)">
+    <div class="login-container">
+      <h2>Admin Login</h2>
+      <p>Access your administration panel</p>
+      <div class="form-group">
+        <input id="loginEmail" placeholder="Email address" type="email" />
+        <input id="loginPassword" placeholder="Password" type="password" />
+      </div>
+      <div class="login-footer">
+        <label><input id="remember" type="checkbox" /> Remember me</label>
+        <button id="loginBtn">Sign In</button>
+      </div>
+      <div id="loginError"></div>
+    </div>
+  </div>
+
+  <div id="app" style="display:none">
+    <header>
+      <div style="max-width:1200px;margin:0 auto;width:100%">
+        <h1>Admin Dashboard</h1>
+      </div>
+    </header>
+
+    <main>
+      <div class="dashboard-grid">
+        <aside>
+          <div class="user-card">
+            <div class="user-profile">
+              <div class="avatar">AK</div>
+              <div class="user-info">
+                <h3>Avinash Kumar</h3>
+                <p>Super Admin</p>
+              </div>
+            </div>
+            <nav>
+              <a href="#">📊 Overview</a>
+              <a href="#">👥 Users</a>
+              <a href="#">🔐 Roles & Permissions</a>
+              <a href="#">📈 Reports</a>
+              <a href="#">⚙️ Settings</a>
+            </nav>
+          </div>
+        </aside>
+
+        <section>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Total Users</div>
+              <div class="stat-value" id="statUsers">1240</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Active Sessions</div>
+              <div class="stat-value" id="statSessions">87</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">New Signups</div>
+              <div class="stat-value" id="statSignups">32</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">System Errors</div>
+              <div class="stat-value" id="statErrors">3</div>
+            </div>
+          </div>
+
+          <div class="controls">
+            <div class="search-group">
+              <input id="searchInput" placeholder="Search users by name, email or role..." type="text" />
+              <button id="searchBtn">🔍 Search</button>
+            </div>
+            <button id="createBtn">➕ Add User</button>
+          </div>
+
+          <div class="quick-actions">
+            <h3>⚡ Quick Actions</h3>
+            <div class="button-group">
+              <button class="btn-primary" onclick="openCreateModal()">✨ Create New User</button>
+              <button class="btn-success" onclick="exportUsers()">📥 Export Users</button>
+              <button class="btn-info" onclick="importUsers()">📤 Import Users</button>
+              <button class="btn-warning" onclick="refreshData()">🔄 Refresh Data</button>
+              <button class="btn-danger" onclick="clearSearch()">🗑️ Clear Filters</button>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table id="usersTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>© <span id="year"></span> Admin Panel — Built with HTML/CSS/JS</footer>
+
+    <!-- EDIT USER MODAL -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>✏️ Edit User</h2>
+          <button class="close-btn" onclick="closeEditModal()">×</button>
+        </div>
+        <form class="modal-form" id="editForm">
+          <input type="hidden" id="editUserId" />
+          <input type="text" id="editName" class="form-input" placeholder="Full Name" required />
+          <input type="email" id="editEmail" class="form-input" placeholder="Email Address" required />
+          <select id="editRole" class="form-select" required>
+            <option value="">Select Role</option>
+            <option value="Admin">Admin</option>
+            <option value="Editor">Editor</option>
+            <option value="Viewer">Viewer</option>
+          </select>
+          <select id="editStatus" class="form-select" required>
+            <option value="Active">Active</option>
+            <option value="Suspended">Suspended</option>
+          </select>
+          <div class="modal-buttons">
+            <button type="button" class="modal-btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+            <button type="submit" class="modal-btn btn-save">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- CREATE USER MODAL -->
+    <div id="createModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>➕ Create New User</h2>
+          <button class="close-btn" onclick="closeCreateModal()">×</button>
+        </div>
+        <form class="modal-form" id="createForm">
+          <input type="text" id="createName" class="form-input" placeholder="Full Name" required />
+          <input type="email" id="createEmail" class="form-input" placeholder="Email Address" required />
+          <select id="createRole" class="form-select" required>
+            <option value="">Select Role</option>
+            <option value="Admin">Admin</option>
+            <option value="Editor">Editor</option>
+            <option value="Viewer">Viewer</option>
+          </select>
+          <div class="modal-buttons">
+            <button type="button" class="modal-btn btn-cancel" onclick="closeCreateModal()">Cancel</button>
+            <button type="submit" class="modal-btn btn-save">Create User</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>🗑️ Delete User</h2>
+          <button class="close-btn" onclick="closeDeleteModal()">×</button>
+        </div>
+        <p style="color: #4a5568; margin-bottom: 20px;">Are you sure you want to delete <strong id="deleteUserName"></strong>? This action cannot be undone.</p>
+        <div class="modal-buttons">
+          <button type="button" class="modal-btn btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+          <button type="button" class="modal-btn btn-save" style="background: #f56565;" onclick="confirmDelete()">Delete User</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGOUT BUTTON -->
+    <button class="logout-btn" onclick="logout()" title="Logout">🚪 Logout</button>
+
+  <script>
+    // CONFIG
+    const demoCred = {email:'admin@example.com',password:'admin123'};
+    const loginScreen = document.getElementById('loginScreen');
+    const app = document.getElementById('app');
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+
+    // NOTIFICATION SYSTEM
+    function showNotification(message, type = 'success') {
+      const notif = document.createElement('div');
+      notif.className = `notification ${type}`;
+      notif.textContent = message;
+      document.body.appendChild(notif);
+      
+      setTimeout(() => {
+        notif.style.animation = 'fadeIn 0.3s ease reverse';
+        setTimeout(() => notif.remove(), 300);
+      }, 3000);
+    }
+
+    // LOGIN FUNCTIONS
+    function setLoggedIn(email, remember){
+      if(remember) localStorage.setItem('admin_logged_in', JSON.stringify({email,ts:Date.now()}));
+      sessionStorage.setItem('admin_logged_in_session', '1');
+      showApp();
+      showNotification('✅ Login successful!', 'success');
+    }
+
+    function isLoggedIn(){
+      if(sessionStorage.getItem('admin_logged_in_session')) return true;
+      const v = localStorage.getItem('admin_logged_in');
+      return !!v;
+    }
+
+    function showApp(){ 
+      loginScreen.style.display='none'; 
+      app.style.display='block'; 
+      document.getElementById('year').textContent = new Date().getFullYear(); 
+      renderTable(users); 
+    }
+
+    function logout() {
+      if(confirm('Are you sure you want to logout?')) {
+        sessionStorage.removeItem('admin_logged_in_session');
+        localStorage.removeItem('admin_logged_in');
+        loginScreen.style.display='flex';
+        app.style.display='none';
+        document.getElementById('loginEmail').value = '';
+        document.getElementById('loginPassword').value = '';
+        document.getElementById('remember').checked = false;
+        showNotification('👋 You have been logged out', 'info');
+      }
+    }
+
+    // LOGIN EVENT LISTENERS
+    document.getElementById('loginEmail').addEventListener('keyup', (e)=>{
+      if(e.key==='Enter') loginBtn.click();
+    });
+
+    document.getElementById('loginPassword').addEventListener('keyup', (e)=>{
+      if(e.key==='Enter') loginBtn.click();
+    });
+
+    loginBtn.addEventListener('click', ()=>{
+      const email = document.getElementById('loginEmail').value.trim();
+      const pwd = document.getElementById('loginPassword').value;
+      const remember = document.getElementById('remember').checked;
+      
+      if(!email || !pwd){ 
+        loginError.style.display='block'; 
+        loginError.textContent='❌ Please provide both email and password'; 
+        return;
+      }
+      
+      if(email===demoCred.email && pwd===demoCred.password){ 
+        loginError.style.display='none'; 
+        setLoggedIn(email, remember); 
+      }
+      else { 
+        loginError.style.display='block'; 
+        loginError.textContent='❌ Invalid credentials (demo: admin@example.com / admin123)'; 
+        showNotification('❌ Login failed! Invalid credentials', 'error');
+      }
+    });
+
+    if(isLoggedIn()) showApp();
+
+    // USER DATA
+    let users = [ 
+      {id:1,name:'Asha Patel',role:'Editor',email:'asha@example.com',status:'Active'}, 
+      {id:2,name:'Rohit Singh',role:'Admin',email:'rohit@example.com',status:'Active'}, 
+      {id:3,name:'Meera Joshi',role:'Viewer',email:'meera@example.com',status:'Suspended'},
+      {id:4,name:'Vikram Desai',role:'Editor',email:'vikram@example.com',status:'Active'},
+      {id:5,name:'Priya Sharma',role:'Viewer',email:'priya@example.com',status:'Active'}
+    ];
+
+    const tbody = document.querySelector('#usersTable tbody');
+    let deleteUserId = null;
+    
+    // TABLE RENDERING
+    function renderTable(list){ 
+      tbody.innerHTML=''; 
+      if(list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 30px; color: #718096;">No users found</td></tr>';
+        return;
+      }
+      list.forEach(u=>{ 
+        const tr=document.createElement('tr'); 
+        const statusClass = u.status === 'Active' ? 'status-active' : 'status-suspended';
+        tr.innerHTML = `
+          <td>#${u.id}</td>
+          <td><strong>${u.name}</strong></td>
+          <td>${u.email}</td>
+          <td><span style="background: #e2e8f0; padding: 4px 12px; border-radius: 20px; font-size: 12px;">${u.role}</span></td>
+          <td><span class="status-badge ${statusClass}">${u.status}</span></td>
+          <td style="text-align:right">
+            <div class="action-buttons">
+              <button onclick="openEditModal(${u.id})">✏️ Edit</button>
+              <button onclick="openDeleteModal(${u.id})">🗑️ Delete</button>
+            </div>
+          </td>
+        `; 
+        tbody.appendChild(tr); 
+      }); 
+    }
+
+    // MODAL FUNCTIONS - EDIT
+    function openEditModal(id) {
+      const u = users.find(x=>x.id===id); 
+      if(!u) return; 
+      document.getElementById('editUserId').value = u.id;
+      document.getElementById('editName').value = u.name;
+      document.getElementById('editEmail').value = u.email;
+      document.getElementById('editRole').value = u.role;
+      document.getElementById('editStatus').value = u.status;
+      document.getElementById('editModal').style.display = 'block';
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+      document.getElementById('editForm').reset();
+    }
+
+    document.getElementById('editForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const id = parseInt(document.getElementById('editUserId').value);
+      const u = users.find(x=>x.id===id); 
+      if(!u) return; 
+      
+      u.name = document.getElementById('editName').value;
+      u.email = document.getElementById('editEmail').value;
+      u.role = document.getElementById('editRole').value;
+      u.status = document.getElementById('editStatus').value;
+      
+      renderTable(users); 
+      closeEditModal();
+      showNotification(`✅ User "${u.name}" updated successfully!`, 'success');
+    });
+
+    // MODAL FUNCTIONS - CREATE
+    function openCreateModal() {
+      document.getElementById('createModal').style.display = 'block';
+    }
+
+    function closeCreateModal() {
+      document.getElementById('createModal').style.display = 'none';
+      document.getElementById('createForm').reset();
+    }
+
+    document.getElementById('createForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const name = document.getElementById('createName').value;
+      const email = document.getElementById('createEmail').value;
+      const role = document.getElementById('createRole').value;
+      
+      // Check if email already exists
+      if(users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        showNotification('❌ Email already exists!', 'error');
+        return;
+      }
+      
+      const id = users.length ? Math.max(...users.map(u=>u.id))+1 : 1; 
+      users.push({id, name, email, role, status:'Active'}); 
+      renderTable(users); 
+      closeCreateModal();
+      showNotification(`✅ New user "${name}" created successfully!`, 'success');
+    });
+
+    // MODAL FUNCTIONS - DELETE
+    function openDeleteModal(id) {
+      const u = users.find(x=>x.id===id);
+      if(!u) return;
+      deleteUserId = id;
+      document.getElementById('deleteUserName').textContent = u.name;
+      document.getElementById('deleteModal').style.display = 'block';
+    }
+
+    function closeDeleteModal() {
+      document.getElementById('deleteModal').style.display = 'none';
+      deleteUserId = null;
+    }
+
+    function confirmDelete() {
+      if(!deleteUserId) return;
+      const u = users.find(x=>x.id===deleteUserId);
+      users = users.filter(u=>u.id!==deleteUserId); 
+      renderTable(users); 
+      closeDeleteModal();
+      showNotification(`🗑️ User "${u.name}" deleted successfully!`, 'success');
+    }
+
+    // SEARCH FUNCTIONALITY
+    document.getElementById('searchBtn').addEventListener('click', performSearch);
+    document.getElementById('searchInput').addEventListener('keyup',(e)=>{ 
+      if(e.key==='Enter') performSearch(); 
+    });
+
+    function performSearch() {
+      const q = document.getElementById('searchInput').value.trim().toLowerCase(); 
+      if(!q) return renderTable(users); 
+      const res = users.filter(u=>
+        u.name.toLowerCase().includes(q)||
+        u.email.toLowerCase().includes(q)||
+        u.role.toLowerCase().includes(q)
+      ); 
+      renderTable(res);
+      if(res.length === 0) {
+        showNotification('⚠️ No users found matching your search', 'info');
+      }
+    }
+
+    // CREATE BUTTON
+    document.getElementById('createBtn').addEventListener('click', openCreateModal);
+
+    // MODAL CLOSE ON OUTSIDE CLICK
+    window.addEventListener('click', (event)=>{
+      const editModal = document.getElementById('editModal');
+      const createModal = document.getElementById('createModal');
+      const deleteModal = document.getElementById('deleteModal');
+      
+      if(event.target === editModal) closeEditModal();
+      if(event.target === createModal) closeCreateModal();
+      if(event.target === deleteModal) closeDeleteModal();
+    });
+
+    // STAT CARDS CLICK HANDLERS
+    document.querySelectorAll('.stat-card').forEach((card, index)=>{
+      card.addEventListener('click', ()=>{
+        const labels = ['Total Users', 'Active Sessions', 'New Signups', 'System Errors'];
+        showNotification(`📊 ${labels[index]}: ${card.querySelector('.stat-value').textContent}`, 'info');
+      });
+      card.style.cursor = 'pointer';
+    });
+
+    // SIDEBAR NAV
+    document.querySelectorAll('.user-card nav a').forEach(link=>{
+      link.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const label = link.textContent.trim();
+        showNotification(`🔄 Navigating to: ${label}`, 'info');
+      });
+    });
+
+    // QUICK ACTION BUTTONS
+    function exportUsers() {
+      if(users.length === 0) {
+        showNotification('❌ No users to export', 'error');
+        return;
+      }
+      
+      const csv = 'ID,Name,Email,Role,Status\n' + 
+        users.map(u => `${u.id},"${u.name}","${u.email}","${u.role}","${u.status}"`).join('\n');
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `users_export_${new Date().getTime()}.csv`;
+      a.click();
+      
+      showNotification(`✅ Exported ${users.length} users successfully!`, 'success');
+    }
+
+    function importUsers() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.csv';
+      input.onchange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          try {
+            const lines = event.target.result.split('\n');
+            const header = lines[0].split(',');
+            let importedCount = 0;
+            
+            for(let i = 1; i < lines.length; i++) {
+              if(lines[i].trim() === '') continue;
+              
+              const values = lines[i].split(',');
+              const newUser = {
+                id: parseInt(values[0]) || Math.max(...users.map(u=>u.id))+1,
+                name: values[1].replace(/"/g, ''),
+                email: values[2].replace(/"/g, ''),
+                role: values[3].replace(/"/g, ''),
+                status: values[4].replace(/"/g, '')
+              };
+              
+              if(!users.some(u => u.email.toLowerCase() === newUser.email.toLowerCase())) {
+                users.push(newUser);
+                importedCount++;
+              }
+            }
+            
+            renderTable(users);
+            showNotification(`✅ Imported ${importedCount} users successfully!`, 'success');
+          } catch(err) {
+            showNotification(`❌ Error importing file: ${err.message}`, 'error');
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+
+    function refreshData() {
+      renderTable(users);
+      document.getElementById('statUsers').textContent = users.length;
+      document.getElementById('statSessions').textContent = Math.floor(Math.random() * 100);
+      document.getElementById('statSignups').textContent = Math.floor(Math.random() * 50);
+      document.getElementById('statErrors').textContent = Math.floor(Math.random() * 10);
+      showNotification('🔄 Data refreshed successfully!', 'success');
+    }
+
+    function clearSearch() {
+      document.getElementById('searchInput').value = '';
+      renderTable(users);
+      showNotification('🗑️ Filters cleared!', 'success');
+    }
+  </script>
+</body>
+</html>
